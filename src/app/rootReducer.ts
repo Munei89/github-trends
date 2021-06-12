@@ -1,6 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-const rootReducer = combineReducers({});
+import login from "app/pages/Login/slice";
+
+const rootReducer = combineReducers({
+  login,
+});
 
 export type RootState = ReturnType<typeof rootReducer>;
 
