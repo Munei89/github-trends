@@ -13,7 +13,7 @@ const initialState: Login = {
 };
 
 const loginSlice = createSlice({
-  name: "todos",
+  name: "login",
   initialState,
   reducers: {
     newUser(state, action: PayloadAction<Login>) {
