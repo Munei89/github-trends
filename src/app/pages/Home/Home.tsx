@@ -1,10 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loadRepos } from "./slice";
-import { Row, Col, Card, Avatar } from "antd";
+import { Row, Col } from "antd";
 import { ForkOutlined, StarOutlined, SyncOutlined } from "@ant-design/icons";
 import selectState from "./selectors";
-import { StyledInnerCard, StyledSpan } from "./styles";
+import {
+  StyledInnerCard,
+  StyledSpan,
+  StyledLastCol,
+  StyledAvatar,
+  StyledButton,
+} from "./styles";
+import { default as NumberFormat } from "react-number-format";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -27,42 +34,83 @@ export default function Home() {
   return (
     <Row>
       {repos.length > 0 && (
-        <Col span={12} offset={6}>
-          <Card title="Card title">
-            {repos.map((a) => {
-              return (
-                <StyledInnerCard
-                  type="inner"
-                  title={`${a.username}/${a.repositoryName}`}
-                  extra={<a href="#">More</a>}
-                >
-                  {a.description && <p>{a.description}</p>}
+        <Col
+          md={{ span: 24, offset: 0 }}
+          lg={{ span: 24, offset: 0 }}
+          xl={{ span: 12, offset: 6 }}
+          sm={{ span: 24, offset: 0 }}
+          xs={{ span: 24, offset: 0 }}
+        >
+          {repos.map((a) => {
+            return (
+              <StyledInnerCard
+                type="inner"
+                title={
+                  <a
+                    href={a.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >{`${a.username}/${a.repositoryName}`}</a>
+                }
+                key={a.username}
+              >
+                <Row>
+                  <Col md={20} xs={24} sm={24} lg={20}>
+                    {a.description && <p>{a.description}</p>}
 
-                  {a.language && <StyledSpan>{a.language}</StyledSpan>}
-                  {a.forks && (
-                    <StyledSpan>
-                      <ForkOutlined />
-                      {a.forks}
-                    </StyledSpan>
-                  )}
-                  {a.totalStars && (
-                    <StyledSpan>
+                    {a.language && <StyledSpan>{a.language}</StyledSpan>}
+                    {a.forks && (
+                      <StyledSpan>
+                        <ForkOutlined />
+                        {a.forks}
+                      </StyledSpan>
+                    )}
+                    {a.totalStars && (
+                      <StyledSpan>
+                        <StarOutlined />
+
+                        <NumberFormat
+                          value={a.totalStars}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                        />
+                      </StyledSpan>
+                    )}
+
+                    {a.builtBy.length > 0 && (
+                      <>
+                        {a.builtBy.map((data) => (
+                          <a href={data.url} target="_blank" rel="noreferrer">
+                            <StyledAvatar
+                              src={data.avatar}
+                              alt={data.username}
+                            />
+                          </a>
+                        ))}
+                      </>
+                    )}
+                  </Col>
+                  <StyledLastCol md={4} lg={4} sm={24}>
+                    <StyledButton>
                       <StarOutlined />
-                      {a.totalStars}
-                    </StyledSpan>
-                  )}
-
-                  {a.builtBy.length > 0 && (
-                    <>
-                      {a.builtBy.map((data) => (
-                        <Avatar src={data.avatar} />
-                      ))}
-                    </>
-                  )}
-                </StyledInnerCard>
-              );
-            })}
-          </Card>
+                      Star
+                    </StyledButton>
+                    {a.starsSince && (
+                      <div>
+                        <StarOutlined />{" "}
+                        <NumberFormat
+                          value={a.starsSince}
+                          displayType={"text"}
+                          thousandSeparator={true}
+                        />{" "}
+                        stars today{" "}
+                      </div>
+                    )}
+                  </StyledLastCol>
+                </Row>
+              </StyledInnerCard>
+            );
+          })}
         </Col>
       )}
     </Row>
