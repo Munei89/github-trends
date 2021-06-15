@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppThunk, AppDispatch } from "app/store";
-import { getRepos } from "api";
-import { IGitHubState, IRepositeries } from "types";
+import { getRepos, getDevelopers } from "api";
+import { IDeveloper, IGitHubState, IRepositeries } from "types";
 
 export const initialState: IGitHubState = {
   loading: false,
@@ -12,7 +12,7 @@ export const initialState: IGitHubState = {
 };
 
 const homeSlice = createSlice({
-  name: "repos",
+  name: "app",
   initialState,
   reducers: {
     getAllRepos(state) {
@@ -26,16 +26,37 @@ const homeSlice = createSlice({
       state.error = true;
       state.loading = false;
     },
+
+    getAllDevelopers(state) {
+      state.loading = true;
+    },
+    getAllDevelopersSuccess(state, action: PayloadAction<IDeveloper[]>) {
+      state.loading = false;
+      state.developers = action.payload;
+    },
+    getAllDevelopersError(state) {
+      state.error = true;
+      state.loading = false;
+    },
   },
 });
 export const { getAllRepos } = homeSlice.actions;
 
 export const loadRepos = (): AppThunk => async (dispatch: AppDispatch) => {
   dispatch(homeSlice.actions.getAllRepos());
-  const todos = await getRepos();
+  const repos = await getRepos();
 
-  if (todos.length > 0) {
-    dispatch(homeSlice.actions.getAllReposSuccess(todos));
+  if (repos.length > 0) {
+    dispatch(homeSlice.actions.getAllReposSuccess(repos));
+  }
+};
+
+export const loadDevelopers = (): AppThunk => async (dispatch: AppDispatch) => {
+  dispatch(homeSlice.actions.getAllDevelopers());
+  const developers = await getDevelopers();
+
+  if (developers.length > 0) {
+    dispatch(homeSlice.actions.getAllDevelopersSuccess(developers));
   }
 };
 
