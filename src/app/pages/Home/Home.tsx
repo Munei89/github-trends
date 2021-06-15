@@ -1,24 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loadRepos } from "./slice";
-import { Row, Col } from "antd";
-import { ForkOutlined, StarOutlined, SyncOutlined } from "@ant-design/icons";
+import { loadRepos, loadDevelopers } from "./slice";
+import { Row, Col, Tabs } from "antd";
+import { SyncOutlined } from "@ant-design/icons";
 import selectState from "./selectors";
-import {
-  StyledInnerCard,
-  StyledSpan,
-  StyledLastCol,
-  StyledAvatar,
-  StyledButton,
-} from "./styles";
-import { default as NumberFormat } from "react-number-format";
+import ReposTab from "./ReposTab";
+import DevelopersTab from "./DevelopersTab";
+
+const { TabPane } = Tabs;
 
 export default function Home() {
   const dispatch = useDispatch();
 
-  const { repos, loading } = selectState();
+  const { repos, developers, loading } = selectState();
   useEffect(() => {
     dispatch(loadRepos());
+    dispatch(loadDevelopers());
   }, [dispatch]);
 
   if (loading) {
@@ -32,86 +29,22 @@ export default function Home() {
   }
   return (
     <Row>
-      {repos.length > 0 && (
-        <Col
-          md={{ span: 24, offset: 0 }}
-          lg={{ span: 24, offset: 0 }}
-          xl={{ span: 12, offset: 6 }}
-          sm={{ span: 24, offset: 0 }}
-          xs={{ span: 24, offset: 0 }}
-        >
-          {repos.map((a) => {
-            return (
-              <StyledInnerCard
-                type="inner"
-                title={
-                  <a
-                    href={a.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >{`${a.username}/${a.repositoryName}`}</a>
-                }
-                key={a.username}
-              >
-                <Row>
-                  <Col md={20} xs={24} sm={24} lg={20}>
-                    {a.description && <p>{a.description}</p>}
-
-                    {a.language && <StyledSpan>{a.language}</StyledSpan>}
-                    {a.forks && (
-                      <StyledSpan>
-                        <ForkOutlined />
-                        {a.forks}
-                      </StyledSpan>
-                    )}
-                    {a.totalStars && (
-                      <StyledSpan>
-                        <StarOutlined />
-
-                        <NumberFormat
-                          value={a.totalStars}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                        />
-                      </StyledSpan>
-                    )}
-
-                    {a.builtBy.length > 0 && (
-                      <>
-                        {a.builtBy.map((data) => (
-                          <a href={data.url} target="_blank" rel="noreferrer">
-                            <StyledAvatar
-                              src={data.avatar}
-                              alt={data.username}
-                            />
-                          </a>
-                        ))}
-                      </>
-                    )}
-                  </Col>
-                  <StyledLastCol md={4} lg={4} sm={24}>
-                    <StyledButton>
-                      <StarOutlined />
-                      Star
-                    </StyledButton>
-                    {a.starsSince && (
-                      <div>
-                        <StarOutlined />{" "}
-                        <NumberFormat
-                          value={a.starsSince}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                        />{" "}
-                        stars today{" "}
-                      </div>
-                    )}
-                  </StyledLastCol>
-                </Row>
-              </StyledInnerCard>
-            );
-          })}
-        </Col>
-      )}
+      <Col
+        md={{ span: 24, offset: 0 }}
+        lg={{ span: 24, offset: 0 }}
+        xl={{ span: 12, offset: 6 }}
+        sm={{ span: 24, offset: 0 }}
+        xs={{ span: 24, offset: 0 }}
+      >
+        <Tabs defaultActiveKey="1" type="card">
+          <TabPane tab="Repositeries" key="1">
+            <ReposTab repos={repos} loading={loading} />
+          </TabPane>
+          <TabPane tab="Developers" key="2">
+            <DevelopersTab developers={developers} loading={loading} />
+          </TabPane>
+        </Tabs>
+      </Col>
     </Row>
   );
 }
