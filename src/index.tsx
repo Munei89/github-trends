@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-
+import { Layout } from "antd";
+import Header from "app/components/Header";
 import store from "./app/store";
-import "./index.css";
+import "antd/dist/antd.css";
 
 function render() {
   const App = require("./app/App").default;
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <Layout>
+        <Header />
+        <App />
+      </Layout>
     </Provider>,
     document.getElementById("root")
   );

@@ -4,14 +4,14 @@ import { AppThunk, AppDispatch } from "app/store";
 import { getRepos } from "api";
 import { IGitHubState, IRepositeries } from "types";
 
-const initialState: IGitHubState = {
+export const initialState: IGitHubState = {
   loading: false,
   error: false,
   repos: [],
   developers: [],
 };
 
-const reposSlice = createSlice({
+const homeSlice = createSlice({
   name: "repos",
   initialState,
   reducers: {
@@ -28,14 +28,15 @@ const reposSlice = createSlice({
     },
   },
 });
-export const { getAllRepos } = reposSlice.actions;
+export const { getAllRepos } = homeSlice.actions;
 
 export const loadRepos = (): AppThunk => async (dispatch: AppDispatch) => {
+  dispatch(homeSlice.actions.getAllRepos());
   const todos = await getRepos();
 
   if (todos.length > 0) {
-    dispatch(reposSlice.actions.getAllReposSuccess(todos));
+    dispatch(homeSlice.actions.getAllReposSuccess(todos));
   }
 };
 
-export default reposSlice.reducer;
+export default homeSlice.reducer;
