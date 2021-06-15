@@ -17,7 +17,6 @@ export default function Home() {
   const dispatch = useDispatch();
 
   const { repos, loading } = selectState();
-
   useEffect(() => {
     dispatch(loadRepos());
   }, [dispatch]);
