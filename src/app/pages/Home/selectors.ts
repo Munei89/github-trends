@@ -7,4 +7,5 @@ export const selectDomain = (state: RootState) => state?.home || initialState;
 
 export const select = () => createSelector([selectDomain], (state) => state);
 
+// eslint-disable-next-line
 export default () => useSelector(select());

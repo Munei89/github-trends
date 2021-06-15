@@ -1,48 +1,42 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppThunk, AppDispatch } from "app/store";
-import { Login } from "./types";
+import { getRepos } from "api";
+import { IGitHubState, IRepositeries } from "types";
 
-const initialState: Login = {
-  isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn")!),
-  user: JSON.parse(localStorage.getItem("user")!),
-  client_id: process.env.REACT_APP_CLIENT_ID,
-  redirect_uri: process.env.REACT_APP_REDIRECT_URI,
-  client_secret: process.env.REACT_APP_CLIENT_SECRET,
-  proxy_url: process.env.REACT_APP_PROXY_URL,
+export const initialState: IGitHubState = {
+  loading: false,
+  error: false,
+  repos: [],
+  developers: [],
 };
 
-const loginSlice = createSlice({
-  name: "login",
+const homeSlice = createSlice({
+  name: "developers",
   initialState,
   reducers: {
-    newUserLogin(state, action: PayloadAction<Login>) {
-      localStorage.setItem(
-        "isLoggedIn",
-        JSON.stringify(action.payload.isLoggedIn)
-      );
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      state.isLoggedIn = action.payload.isLoggedIn;
-      state.user = action.payload.user;
+    getAllRepos(state) {
+      state.loading = true;
+    },
+    getAllReposSuccess(state, action: PayloadAction<IRepositeries[]>) {
+      state.loading = false;
+      state.repos = action.payload;
+    },
+    getAllReposError(state) {
+      state.error = true;
+      state.loading = false;
     },
   },
 });
+export const { getAllRepos } = homeSlice.actions;
 
-// export const { toggleTodo } = loginSlice.actions;
+export const loadRepos = (): AppThunk => async (dispatch: AppDispatch) => {
+  dispatch(homeSlice.actions.getAllRepos());
+  const todos = await getRepos();
 
-export const newUser =
-  (text: string): AppThunk =>
-  async (dispatch: AppDispatch) => {
-    const newLogin: Login = {
-      // @TODO check if this not null
-      isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn")!),
-      user: JSON.parse(localStorage.getItem("user")!),
-      client_id: process.env.REACT_APP_CLIENT_ID,
-      redirect_uri: process.env.REACT_APP_REDIRECT_URI,
-      client_secret: process.env.REACT_APP_CLIENT_SECRET,
-      proxy_url: process.env.REACT_APP_PROXY_URL,
-    };
-    dispatch(loginSlice.actions.newUserLogin(newLogin));
-  };
+  if (todos.length > 0) {
+    dispatch(homeSlice.actions.getAllReposSuccess(todos));
+  }
+};
 
-export default loginSlice.reducer;
+export default homeSlice.reducer;
