@@ -12,6 +12,7 @@ export const StyledRow = styled(Row)`
 
 export const StyledHeader = styled.h1`
   font-size: 48px;
+  color: #fff;
 `;
 
 export const StyledText = styled.p`
