@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import { SyncOutlined } from "@ant-design/icons";
+import { SyncOutlined, DeploymentUnitOutlined } from "@ant-design/icons";
 import {
   StyledInnerCard,
   StyledSpan,
@@ -56,10 +56,11 @@ const DevelopersTab: React.FunctionComponent<IDeveloperProps> = ({
                     {a.popularRepository && (
                       <>
                         <StyledText>
+                          <DeploymentUnitOutlined />{" "}
                           {a.popularRepository.repositoryName}
                         </StyledText>
                         <StyledText>
-                          {a.popularRepository.description}
+                          <strong>{a.popularRepository.description}</strong>
                         </StyledText>
                       </>
                     )}

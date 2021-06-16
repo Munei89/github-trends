@@ -43,20 +43,28 @@ const homeSlice = createSlice({
 export const { getAllRepos } = homeSlice.actions;
 
 export const loadRepos = (): AppThunk => async (dispatch: AppDispatch) => {
-  dispatch(homeSlice.actions.getAllRepos());
-  const repos = await getRepos();
+  try {
+    dispatch(homeSlice.actions.getAllRepos());
+    const repos = await getRepos();
 
-  if (repos.length > 0) {
-    dispatch(homeSlice.actions.getAllReposSuccess(repos));
+    if (repos.length > 0) {
+      dispatch(homeSlice.actions.getAllReposSuccess(repos));
+    }
+  } catch (e) {
+    dispatch(homeSlice.actions.getAllReposError());
   }
 };
 
 export const loadDevelopers = (): AppThunk => async (dispatch: AppDispatch) => {
-  dispatch(homeSlice.actions.getAllDevelopers());
-  const developers = await getDevelopers();
+  try {
+    dispatch(homeSlice.actions.getAllDevelopers());
+    const developers = await getDevelopers();
 
-  if (developers.length > 0) {
-    dispatch(homeSlice.actions.getAllDevelopersSuccess(developers));
+    if (developers.length > 0) {
+      dispatch(homeSlice.actions.getAllDevelopersSuccess(developers));
+    }
+  } catch (e) {
+    dispatch(homeSlice.actions.getAllDevelopersError());
   }
 };
 

@@ -70,6 +70,7 @@ const ReposTab: React.FunctionComponent<IReposProps> = ({ repos, loading }) => {
                         {a.builtBy.map((data) => (
                           <a href={data.url} target="_blank" rel="noreferrer">
                             <StyledAvatar
+                              key={data.username}
                               src={data.avatar}
                               alt={data.username}
                             />

@@ -2,7 +2,6 @@ import axios from "axios";
 import { IDeveloper, IRepositeries } from "../types";
 
 const baseUrl = `/api/`;
-
 const headers = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

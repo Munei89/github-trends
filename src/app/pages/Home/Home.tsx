@@ -6,6 +6,7 @@ import { SyncOutlined } from "@ant-design/icons";
 import selectState from "./selectors";
 import ReposTab from "./ReposTab";
 import DevelopersTab from "./DevelopersTab";
+import { StyledLoadingCol } from "./styles";
 
 const { TabPane } = Tabs;
 
@@ -21,9 +22,15 @@ export default function Home() {
   if (loading) {
     return (
       <Row>
-        <Col span={24}>
+        <StyledLoadingCol
+          md={{ span: 24, offset: 0 }}
+          lg={{ span: 24, offset: 0 }}
+          xl={{ span: 12, offset: 6 }}
+          sm={{ span: 24, offset: 0 }}
+          xs={{ span: 24, offset: 0 }}
+        >
           <SyncOutlined spin />
-        </Col>
+        </StyledLoadingCol>
       </Row>
     );
   }
