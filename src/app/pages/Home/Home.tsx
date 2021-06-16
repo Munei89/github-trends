@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loadRepos, loadDevelopers } from "./slice";
-import { Row, Col, Tabs } from "antd";
+import { Row, Col, Tabs, notification } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import selectState from "./selectors";
 import ReposTab from "./ReposTab";
@@ -13,11 +13,20 @@ const { TabPane } = Tabs;
 export default function Home() {
   const dispatch = useDispatch();
 
-  const { repos, developers, loading } = selectState();
+  const { repos, developers, loading, error } = selectState();
   useEffect(() => {
     dispatch(loadRepos());
     dispatch(loadDevelopers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      notification["error"]({
+        message: "Error",
+        description: "Oops, There was an error loading the data.",
+      });
+    }
+  }, [error]);
 
   if (loading) {
     return (
