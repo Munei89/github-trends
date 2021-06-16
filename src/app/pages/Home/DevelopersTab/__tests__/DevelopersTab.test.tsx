@@ -1,7 +1,8 @@
-import React from "react";
 import { render } from "@testing-library/react";
-import App from "./App";
-import { initialState } from "app/pages/Home/slice";
+
+import DevelpersTab from "../DeveloperTab";
+import { initialState } from "../../slice";
+import { developers } from "../../mockState";
 
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
@@ -13,11 +14,11 @@ const mockStore = configureMockStore(middlewares);
 describe("With React Testing Library", () => {
   let store, wrapper;
 
-  it("It renders App", () => {
+  it("Loads Developers Tab", () => {
     store = mockStore(initialState);
-    const { getByText } = render(
+    render(
       <Provider store={store}>
-        <App />
+        <DevelpersTab developers={developers} loading={false} />
       </Provider>
     );
   });

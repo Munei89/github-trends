@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import { SyncOutlined } from "@ant-design/icons";
+import { SyncOutlined, DeploymentUnitOutlined } from "@ant-design/icons";
 import {
   StyledInnerCard,
   StyledSpan,
@@ -47,7 +47,11 @@ const DevelopersTab: React.FunctionComponent<IDeveloperProps> = ({
                         />
                       </Col>
                       <Col span={14}>
-                        {a.name && <StyledText>{a.name}</StyledText>}
+                        {a.name && (
+                          <a href={a.url} target="_blank" rel="noreferrer">
+                            <StyledText>{a.name}</StyledText>
+                          </a>
+                        )}
                         {a.username && <StyledText>{a.username}</StyledText>}
                       </Col>
                     </Row>
@@ -55,11 +59,19 @@ const DevelopersTab: React.FunctionComponent<IDeveloperProps> = ({
                   <Col md={8} xs={24} sm={24} lg={8}>
                     {a.popularRepository && (
                       <>
+                        <StyledText>Popular Repo</StyledText>
+                        <a
+                          href={a.popularRepository.url!}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <StyledText>
+                            <DeploymentUnitOutlined />{" "}
+                            {a.popularRepository.repositoryName}
+                          </StyledText>
+                        </a>
                         <StyledText>
-                          {a.popularRepository.repositoryName}
-                        </StyledText>
-                        <StyledText>
-                          {a.popularRepository.description}
+                          <strong>{a.popularRepository.description}</strong>
                         </StyledText>
                       </>
                     )}

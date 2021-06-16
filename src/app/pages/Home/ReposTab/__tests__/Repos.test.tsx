@@ -1,7 +1,8 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import App from "./App";
-import { initialState } from "app/pages/Home/slice";
+import { render, screen } from "@testing-library/react";
+
+import ReposTab from "../ReposTab";
+import { initialState } from "../../slice";
+import { repos } from "../../mockState";
 
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
@@ -13,11 +14,11 @@ const mockStore = configureMockStore(middlewares);
 describe("With React Testing Library", () => {
   let store, wrapper;
 
-  it("It renders App", () => {
+  it("Loads Repos Tab", () => {
     store = mockStore(initialState);
-    const { getByText } = render(
+    render(
       <Provider store={store}>
-        <App />
+        <ReposTab repos={repos} loading={false} />
       </Provider>
     );
   });

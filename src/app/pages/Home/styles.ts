@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Card, Col, Avatar, Button } from "antd";
 
 export const StyledInnerCard = styled(Card)`
-  margin: 16px 0;
+  margin-bottom: 16px;
 `;
 
 export const StyledSpan = styled.span`
@@ -32,4 +32,8 @@ export const StyledButton = styled(Button)`
 
 export const StyledText = styled.p`
   margin-bottom: 5px;
+`;
+
+export const StyledLoadingCol = styled(Col)`
+  text-align: center;
 `;

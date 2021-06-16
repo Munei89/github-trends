@@ -1,29 +1,45 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loadRepos, loadDevelopers } from "./slice";
-import { Row, Col, Tabs } from "antd";
+import { Row, Col, Tabs, notification } from "antd";
 import { SyncOutlined } from "@ant-design/icons";
 import selectState from "./selectors";
 import ReposTab from "./ReposTab";
 import DevelopersTab from "./DevelopersTab";
+import { StyledLoadingCol } from "./styles";
 
 const { TabPane } = Tabs;
 
 export default function Home() {
   const dispatch = useDispatch();
 
-  const { repos, developers, loading } = selectState();
+  const { repos, developers, loading, error } = selectState();
   useEffect(() => {
     dispatch(loadRepos());
     dispatch(loadDevelopers());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      notification["error"]({
+        message: "Error",
+        description: "Oops, There was an error loading the data.",
+      });
+    }
+  }, [error]);
+
   if (loading) {
     return (
       <Row>
-        <Col span={24}>
+        <StyledLoadingCol
+          md={{ span: 24, offset: 0 }}
+          lg={{ span: 24, offset: 0 }}
+          xl={{ span: 12, offset: 6 }}
+          sm={{ span: 24, offset: 0 }}
+          xs={{ span: 24, offset: 0 }}
+        >
           <SyncOutlined spin />
-        </Col>
+        </StyledLoadingCol>
       </Row>
     );
   }
